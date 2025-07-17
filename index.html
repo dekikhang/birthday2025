@@ -29,74 +29,6 @@
             z-index: 1;
         }
 
-        /* Music Control Styles */
-        .music-controls {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 10px 15px;
-            border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .music-btn {
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .music-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .volume-control {
-            width: 80px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 3px;
-            outline: none;
-            cursor: pointer;
-        }
-
-        .volume-control::-webkit-slider-thumb {
-            appearance: none;
-            width: 15px;
-            height: 15px;
-            background: #4ecdc4;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        .music-status {
-            color: white;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .music-note-icon {
-            animation: musicBounce 1s infinite;
-        }
-
-        @keyframes musicBounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-
         .heart {
             position: absolute;
             color: #ff69b4;
@@ -510,46 +442,9 @@
             0% { transform: translateY(-100vh) rotate(0deg); }
             100% { transform: translateY(100vh) rotate(360deg); }
         }
-
-        /* Mobile responsive styles */
-        @media (max-width: 768px) {
-            .music-controls {
-                top: 10px;
-                right: 10px;
-                padding: 8px 12px;
-            }
-            
-            .volume-control {
-                width: 60px;
-            }
-            
-            .birthday-card {
-                padding: 30px 20px;
-            }
-            
-            .birthday-title {
-                font-size: 2.5em;
-            }
-        }
     </style>
 </head>
 <body>
-    <!-- Audio element for background music -->
-    <audio id="backgroundMusic" loop>
-        <source src="hpbd.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-
-    <!-- Music controls -->
-    <div class="music-controls">
-        <button class="music-btn" id="musicToggle" onclick="toggleMusic()">🎵 Tắt nhạc</button>
-        <input type="range" class="volume-control" id="volumeSlider" min="0" max="1" step="0.1" value="0.5" onchange="changeVolume()">
-        <div class="music-status">
-            <span class="music-note-icon">♪</span>
-            <span id="musicStatus">Đang phát</span>
-        </div>
-    </div>
-
     <div class="background-animation" id="backgroundAnimation"></div>
     
     <div class="card-container">
@@ -611,9 +506,8 @@
     <script>
         let currentName = "Nguyễn Thục Hiền";
         let currentBirthDate = "1999-07-20";
-        let currentImageUrl = "img7.jpg";
+        let currentImageUrl = "img7.jpg"; // Đã thay đổi thành img7
         let currentImageIndex = 0;
-        let musicPlaying = false;
         
         const availableMedia = [
             { type: 'image', src: 'img1.jpg' },
@@ -625,69 +519,6 @@
             { type: 'image', src: 'img6.jpg' }, 
             { type: 'video', src: 'video1.mp4' }
         ];
-
-        // Music functions
-        function initializeMusic() {
-            const audio = document.getElementById('backgroundMusic');
-            const volumeSlider = document.getElementById('volumeSlider');
-            
-            // Set initial volume
-            audio.volume = 0.5;
-            
-            // Try to play music automatically
-            playMusic();
-        }
-
-        function playMusic() {
-            const audio = document.getElementById('backgroundMusic');
-            const musicToggle = document.getElementById('musicToggle');
-            const musicStatus = document.getElementById('musicStatus');
-            
-            audio.play().then(() => {
-                musicPlaying = true;
-                musicToggle.textContent = '🔇 Tắt nhạc';
-                musicStatus.textContent = 'Đang phát';
-                
-                // Add music notes effect
-                for (let i = 0; i < 8; i++) {
-                    setTimeout(() => {
-                        document.getElementById('backgroundAnimation').appendChild(createMusicNote());
-                    }, i * 200);
-                }
-            }).catch(error => {
-                console.log('Không thể phát nhạc tự động:', error);
-                musicToggle.textContent = '🎵 Bật nhạc';
-                musicStatus.textContent = 'Nhấn để phát';
-            });
-        }
-
-        function toggleMusic() {
-            const audio = document.getElementById('backgroundMusic');
-            const musicToggle = document.getElementById('musicToggle');
-            const musicStatus = document.getElementById('musicStatus');
-            
-            if (musicPlaying) {
-                audio.pause();
-                musicPlaying = false;
-                musicToggle.textContent = '🎵 Bật nhạc';
-                musicStatus.textContent = 'Đã tắt';
-            } else {
-                audio.play().then(() => {
-                    musicPlaying = true;
-                    musicToggle.textContent = '🔇 Tắt nhạc';
-                    musicStatus.textContent = 'Đang phát';
-                }).catch(error => {
-                    console.log('Không thể phát nhạc:', error);
-                    alert('Không thể phát nhạc. Vui lòng kiểm tra file hpbd.mp3');
-                });
-            }
-        }
-
-        function changeVolume() {
-            const audio = document.getElementById('backgroundMusic');
-            const volumeSlider = document.getElementById('volumeSlider');
-            audio.volume = volumeSlider.value;
-        }
 
         function formatBirthDate(dateString) {
             const date = new Date(dateString);
@@ -722,13 +553,6 @@
                 setTimeout(() => {
                     background.appendChild(createSparkle());
                 }, i * 150);
-            }
-            
-            // Add music notes when clicking cake
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    background.appendChild(createMusicNote());
-                }, i * 200);
             }
             
             const cake = document.getElementById('birthdayCake');
@@ -846,4 +670,122 @@
 
         function createHeart() {
             const heart = document.createElement('div');
-            heart.className
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            heart.style.animationDuration = (4 + Math.random() * 4) + 's';
+            return heart;
+        }
+
+        function createFirework() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'];
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            firework.style.left = Math.random() * 100 + '%';
+            firework.style.top = Math.random() * 100 + '%';
+            firework.style.animationDelay = Math.random() * 2 + 's';
+            return firework;
+        }
+
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.top = Math.random() * 100 + '%';
+            return sparkle;
+        }
+
+        function createMusicNote() {
+            const notes = ['♪', '♫', '♬', '♩'];
+            const musicNote = document.createElement('div');
+            musicNote.className = 'music-note';
+            musicNote.innerHTML = notes[Math.floor(Math.random() * notes.length)];
+            musicNote.style.left = Math.random() * 100 + '%';
+            musicNote.style.top = Math.random() * 100 + '%';
+            return musicNote;
+        }
+
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'];
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.animationDelay = Math.random() * 3 + 's';
+            return confetti;
+        }
+
+        function addMoreEffects() {
+            const background = document.getElementById('backgroundAnimation');
+            
+            for (let i = 0; i < 5; i++) {
+                background.appendChild(createHeart());
+            }
+            
+            for (let i = 0; i < 8; i++) {
+                background.appendChild(createFirework());
+            }
+            
+            for (let i = 0; i < 10; i++) {
+                background.appendChild(createSparkle());
+            }
+            
+            for (let i = 0; i < 15; i++) {
+                background.appendChild(createConfetti());
+            }
+        }
+
+        function initializeEffects() {
+            const background = document.getElementById('backgroundAnimation');
+            
+            for (let i = 0; i < 8; i++) {
+                background.appendChild(createHeart());
+            }
+            
+            for (let i = 0; i < 12; i++) {
+                background.appendChild(createFirework());
+            }
+            
+            for (let i = 0; i < 6; i++) {
+                background.appendChild(createMusicNote());
+            }
+            
+            for (let i = 0; i < 10; i++) {
+                background.appendChild(createConfetti());
+            }
+        }
+
+        window.addEventListener('load', function() {
+            initializeEffects();
+            updateDisplay();
+            
+            setInterval(() => {
+                const background = document.getElementById('backgroundAnimation');
+                if (background.children.length > 100) {
+                    for (let i = 0; i < 20; i++) {
+                        if (background.firstChild) {
+                            background.removeChild(background.firstChild);
+                        }
+                    }
+                }
+                
+                background.appendChild(createHeart());
+                background.appendChild(createFirework());
+                if (Math.random() > 0.7) background.appendChild(createConfetti());
+            }, 2000);
+        });
+
+        document.querySelector('.birthday-card').addEventListener('click', function(e) {
+            if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        document.getElementById('backgroundAnimation').appendChild(createSparkle());
+                    }, i * 100);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -445,6 +445,9 @@
     </style>
 </head>
 <body>
+    <!-- Thêm audio phát tự động -->
+    <audio id="birthdayMusic" src="hpbd.mp3" autoplay loop hidden></audio>
+    
     <div class="background-animation" id="backgroundAnimation"></div>
     
     <div class="card-container">
@@ -786,6 +789,18 @@
                 }
             }
         });
+
+        // Thêm đoạn này để phát nhạc khi người dùng click/touch lần đầu
+        function playMusicOnce() {
+            const music = document.getElementById('birthdayMusic');
+            if (music) {
+                music.play();
+            }   
+            document.removeEventListener('click', playMusicOnce);
+            document.removeEventListener('touchstart', playMusicOnce);
+        }
+        document.addEventListener('click', playMusicOnce);
+        document.addEventListener('touchstart', playMusicOnce);
     </script>
 </body>
 </html>
